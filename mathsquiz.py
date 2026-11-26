@@ -63,3 +63,86 @@ def decideOperation():  # pick addition or subtraction at random
         return "+"
     else:
         return "-"
+    def startQuiz(chosenLevel):
+     global level, questionNum, score
+    level = chosenLevel
+    questionNum = 0
+    score = 0
+    nextQuestion()
+
+
+def nextQuestion():
+    global questionNum, tries
+    if questionNum == 10:
+        displayResults()
+    else:
+        questionNum += 1
+        tries = 1
+        displayProblem()
+
+def displayProblem():
+    global correctAnswer, answerBox
+    clearScreen()
+
+    num1 = randomInt(level)
+    num2 = randomInt(level)
+    operation = decideOperation()
+
+    if operation == "+":
+        correctAnswer = num1 + num2
+    else:
+        correctAnswer = num1 - num2
+
+    tk.Label(window, text="Question " + str(questionNum) + " of 10",
+             font=("Arial", 14), bg=BG, fg=DARK).pack(pady=(25, 0))
+    tk.Label(window, text="Score: " + str(score),
+             font=("Arial", 14, "bold"), bg=BG, fg=DARK).pack(pady=(0, 15))
+
+    card = tk.Frame(window, bg=CARD, padx=30, pady=20)
+    card.pack(pady=10)
+    tk.Label(card, text=str(num1) + " " + operation + " " + str(num2) + " =",
+             font=("Arial", 32, "bold"), bg=CARD, fg=DARK).pack()
+
+    answerBox = tk.Entry(window, font=("Arial", 20), width=10, justify="center",
+                         bg=ENTRY_BG, fg=DARK, relief="flat")
+    answerBox.pack(pady=15, ipady=6)
+    answerBox.focus()
+    answerBox.bind("<Return>", lambda event: checkAnswer())
+
+    ttk.Button(window, text="Submit", style="Sage.TButton",
+               command=checkAnswer).pack(pady=5)
+
+    ttk.Button(window, text="Back to Menu", style="Sage.TButton",
+               command=displayMenu).pack(pady=5)
+
+def isCorrect(userAnswer, correct, attempt):
+    if userAnswer == correct:
+        messagebox.showinfo("Correct!", "Well done, that's right!")
+        return True
+    if attempt == 1:
+        messagebox.showinfo("Not quite", "That's wrong, but you get one more try.")
+    else:
+        messagebox.showinfo("Wrong", "Sorry, the right answer was " + str(correct) + ".")
+    return False
+
+
+def checkAnswer():
+    global score, tries
+
+    try:
+        userAnswer = int(answerBox.get())
+    except ValueError:
+        messagebox.showwarning("Hold on", "Please type a whole number.")
+        return
+
+    if isCorrect(userAnswer, correctAnswer, tries):
+        if tries == 1:
+            score += 10
+        else:
+            score += 5
+        nextQuestion()
+    elif tries == 1:
+        tries = 2
+        answerBox.delete(0, tk.END)
+    else:
+        nextQuestion()
