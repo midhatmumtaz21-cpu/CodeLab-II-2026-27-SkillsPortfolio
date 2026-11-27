@@ -35,7 +35,7 @@ animJobs = []
 
 
 def blend(c1, c2, t):  # linear rgb interpolation between two hex colors
-    """Mix two hex colours. t=0 gives c1, t=1 gives c2."""
+    "Mix two hex colours. t=0 gives c1, t=1 gives c2."
     a = [int(c1[i:i + 2], 16) for i in (1, 3, 5)]
     b = [int(c2[i:i + 2], 16) for i in (1, 3, 5)]
     mixed = [round(a[i] + (b[i] - a[i]) * t) for i in range(3)]
@@ -53,7 +53,7 @@ def stopAnimations():  # cancel pending after() callbacks and clear queue
 
 
 def thinking(step=0):  # animate loading dots then start setup typewriter
-    """'Alexa is thinking...' with animated dots, then types the joke."""
+    "'Alexa is thinking...' with animated dots, then types the joke."
     if step < 8:
         setupLabel.config(text="Alexa is thinking" + "." * (step % 4))
         later(220, thinking, step + 1)
@@ -61,22 +61,21 @@ def thinking(step=0):  # animate loading dots then start setup typewriter
         typewriter(currentJoke[0])
 
 
-def typewriter(text, i=0):  # slice string prefix recursively on timer ticks
-    """Reveal the setup one letter at a time."""
+    def typewriter(text, i=0):  # slice string prefix recursively on timer ticks
+     "Reveal the setup one letter at a time."
     setupLabel.config(text=text[:i])
     if i < len(text):
         later(35, typewriter, text, i + 1)
 
-
-def fadeIn(step=0, steps=12):  # step punchline foreground color toward target hex
-    """Fade the punchline from the card colour into its final colour."""
-    punchlineLabel.config(fg=blend(CARD, PUNCH, step / steps))
+    def fadeIn(step=0, steps=12):  # step punchline foreground color toward target hex
+     "Fade the punchline from the card colour into its final colour."
+     punchlineLabel.config(fg=blend(CARD, PUNCH, step / steps))
     if step < steps:
         later(45, fadeIn, step + 1, steps)
 
 
 def pulseTitle(step=0):  # drive continuous sine wave color oscillation
-    """Gently pulse the title colour forever."""
+    "Gently pulse the title colour forever."
     t = (math.sin(step / 8) + 1) / 2
     titleLabel.config(fg=blend(DARK, BTN, t))
     window.after(60, pulseTitle, step + 1)

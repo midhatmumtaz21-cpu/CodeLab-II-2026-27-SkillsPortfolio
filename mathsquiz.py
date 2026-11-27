@@ -146,3 +146,35 @@ def checkAnswer():
         answerBox.delete(0, tk.END)
     else:
         nextQuestion()
+def displayResults():
+    clearScreen()
+
+    if score > 90:
+        grade = "A+"
+    elif score >= 80:
+        grade = "A"
+    elif score >= 70:
+        grade = "B"
+    elif score >= 60:
+        grade = "C"
+    elif score >= 50:
+        grade = "D"
+    else:
+        grade = "F"
+
+    tk.Label(window, text="Quiz finished!", font=("Arial", 26, "bold"),
+             bg=BG, fg=DARK).pack(pady=(40, 15))
+    tk.Label(window, text="Your score: " + str(score) + " out of 100",
+             font=("Arial", 18), bg=BG, fg=DARK).pack(pady=5)
+    tk.Label(window, text="Your grade: " + grade,
+             font=("Arial", 18, "bold"), bg=BG, fg=DARK).pack(pady=5)
+    tk.Label(window, text="Do you want to play again?",
+             font=("Arial", 13), bg=BG, fg=DARK).pack(pady=(25, 10))
+
+    ttk.Button(window, text="Play Again", style="Sage.TButton", width=16,
+               command=displayMenu).pack(pady=5)
+    ttk.Button(window, text="Quit", style="Sage.TButton", width=16,
+               command=window.destroy).pack(pady=5)
+
+displayMenu()
+window.mainloop()
