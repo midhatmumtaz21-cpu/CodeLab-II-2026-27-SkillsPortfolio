@@ -61,15 +61,16 @@ def thinking(step=0):  # animate loading dots then start setup typewriter
         typewriter(currentJoke[0])
 
 
-    def typewriter(text, i=0):  # slice string prefix recursively on timer ticks
-     "Reveal the setup one letter at a time."
+def typewriter(text, i=0):  # slice string prefix recursively on timer ticks
+    "Reveal the setup one letter a time."
     setupLabel.config(text=text[:i])
     if i < len(text):
         later(35, typewriter, text, i + 1)
 
-    def fadeIn(step=0, steps=12):  # step punchline foreground color toward target hex
-     "Fade the punchline from the card colour into its final colour."
-     punchlineLabel.config(fg=blend(CARD, PUNCH, step / steps))
+
+def fadeIn(step=0, steps=12):  # step punchline foreground color toward target hex
+    "Fade the punchline from the card colour into its final colour."
+    punchlineLabel.config(fg=blend(CARD, PUNCH, step / steps))
     if step < steps:
         later(45, fadeIn, step + 1, steps)
 
