@@ -63,8 +63,8 @@ def decideOperation():  # pick addition or subtraction at random
         return "+"
     else:
         return "-"
-    def startQuiz(chosenLevel):
-     global level, questionNum, score
+def startQuiz(chosenLevel):
+    global level, questionNum, score
     level = chosenLevel
     questionNum = 0
     score = 0
