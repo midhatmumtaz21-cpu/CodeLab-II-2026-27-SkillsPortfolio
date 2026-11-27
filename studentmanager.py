@@ -132,3 +132,57 @@ def show_text(text):  # write text to read only output box and highlight headers
     output_box.config(state="disabled")
 
 show_text("Pick an option on the left to see the results.")
+def view_all():  # render every student record plus class average stats
+    text = ""
+    for student in students:
+        text += student.summary() + "\n"
+    average = sum(s.percentage() for s in students) / len(students)
+    text += f"Number of students in class: {len(students)}\n"
+    text += f"Average percentage mark:     {average:.1f}%\n"
+    show_text(text)
+
+ttk.Button(sidebar, text="1   View all students", style="Side.TButton",
+           command=view_all).pack(fill="x", padx=20, pady=4)
+
+def view_one():  # filter students by exact code or partial name match
+    search = search_entry.get().strip().lower()
+    if search == "":
+        messagebox.showwarning("Search", "Enter a student name or number first.")
+        return
+    matches = [s for s in students
+               if search == s.code or search in s.name.lower()]
+    if not matches:
+        show_text("No student found.")
+    else:
+        show_text("\n".join(s.summary() for s in matches))
+
+tk.Frame(sidebar, bg="#8C4A3E", height=1).pack(fill="x", padx=20, pady=14)
+
+tk.Label(sidebar, text="2   VIEW ONE STUDENT", font=("Arial", 10, "bold"),
+         bg=SIDEBAR, fg=SOFT).pack(anchor="w", padx=24)
+tk.Label(sidebar, text="name or student number", font=("Arial", 11),
+         bg=SIDEBAR, fg=SOFT).pack(anchor="w", padx=24, pady=(4, 2))
+search_entry = tk.Entry(sidebar, font=("Arial", 13), bg=BOX, fg=DARK,
+                        relief="flat", insertbackground=DARK)
+search_entry.pack(fill="x", padx=24, pady=4, ipady=5)
+search_entry.bind("<Return>", lambda event: view_one())
+ttk.Button(sidebar, text="Search", style="Find.TButton",
+           command=view_one).pack(fill="x", padx=20, pady=(6, 4))
+
+def view_highest():  # find and display student with max percentage
+    best = max(students, key=lambda s: s.percentage())
+    show_text("HIGHEST SCORE\n\n" + best.summary())
+
+
+def view_lowest():  # find and display student with min percentage
+    worst = min(students, key=lambda s: s.percentage())
+    show_text("LOWEST SCORE\n\n" + worst.summary())
+
+tk.Frame(sidebar, bg="#8C4A3E", height=1).pack(fill="x", padx=20, pady=14)
+
+ttk.Button(sidebar, text="3   Highest score", style="Side.TButton",
+           command=view_highest).pack(fill="x", padx=20, pady=4)
+ttk.Button(sidebar, text="4   Lowest score", style="Side.TButton",
+           command=view_lowest).pack(fill="x", padx=20, pady=4)
+
+window.mainloop()
