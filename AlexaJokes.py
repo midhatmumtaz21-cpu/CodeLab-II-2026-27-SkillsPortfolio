@@ -74,3 +74,23 @@ def pulseTitle(step=0):  # drive continuous sine wave color oscillation
     t = (math.sin(step / 8) + 1) / 2
     titleLabel.config(fg=blend(DARK, BTN, t))
     window.after(60, pulseTitle, step + 1)
+    style = ttk.Style()
+style.theme_use("clam")
+style.configure("Olive.TButton", background=BTN, foreground="white",
+                font=("Arial", 13, "bold"), padding=8, borderwidth=0,
+                focuscolor=BTN)
+style.map("Olive.TButton", background=[("active", BTN_HOVER)])
+
+titleLabel = tk.Label(window, text="Alexa Joke Assistant",
+                      font=("Arial", 22, "bold"), bg=BG, fg=DARK)
+titleLabel.pack(pady=(20, 10))
+
+jokeBox = tk.Frame(window, bg=CARD, padx=15, pady=15)
+jokeBox.pack(padx=30, pady=10, fill="x")
+
+setupLabel = tk.Label(jokeBox, text="", font=("Arial", 15), bg=CARD, fg=DARK,
+                      wraplength=460, height=3)
+setupLabel.pack()
+punchlineLabel = tk.Label(jokeBox, text="", font=("Arial", 15, "bold"), bg=CARD,
+                          fg=PUNCH, wraplength=460, height=3)
+punchlineLabel.pack()
